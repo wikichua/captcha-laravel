@@ -78,7 +78,7 @@ class Captcha {
 
     public function checkCaptcha($user_input)
     {
-        if(strtoupper(Session::get('captchaKey') == strtoupper($user_input))
+        if(strtoupper(Session::get('captchaKey')) == strtoupper($user_input))
         {
             return true;
         }
