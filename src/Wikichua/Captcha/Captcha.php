@@ -1,6 +1,6 @@
 <?php namespace Wikichua\Captcha;
 
-use Sessions, Config, URL;
+use Sessions, Config, URL, HTML;
 
 class Captcha {
 
@@ -12,24 +12,37 @@ class Captcha {
     protected $width;
     protected $possibleString;
     protected $stringLength;
+    protected $backColorRGB;
+    protected $lineColorRGB;
+    protected $textColorRGB;
 
     public function __construct()
     {
-        $this->font='public/packages/wikichua/captcha/fonts/luxisr.ttf'; 
-        $this->count=40;  
-        $this->fSize=20;  
-        $this->height=50;  
-        $this->width=150;
-        $this->stringLength=5;
-        $this->possibleString="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $this->font=Config::get('captcha::font'); 
+        $this->count=Config::get('captcha::count');  
+        $this->fSize=Config::get('captcha::fontSize');  
+        $this->height=Config::get('captcha::height');  
+        $this->width=Config::get('captcha::width');
+        $this->stringLength=Config::get('captcha::stringLength');
+        $this->possibleString=Config::get('captcha::possibleString');
+        $this->backColorRGB = Config::get('captcha::backColorRGB');
+        $this->lineColorRGB = Config::get('captcha::lineColorRGB');
+        $this->textColorRGB = Config::get('captcha::textColorRGB');
     }
 
     public function createCaptcha() 
     {
         $this->img=imagecreate($this->width,$this->height) or die("GD not found!"); 
-        $backColor=imagecolorallocate($this->img,255,255,255);
-        $lineColor=imagecolorallocate($this->img,255,238,238);
-        $textColor=imagecolorallocate($this->img,0,255,255);
+        
+        list($r,$g,$b) = explode(',',$this->backColorRGB);
+        $backColor=imagecolorallocate($this->img,$r,$g,$b);
+
+        list($r,$g,$b) = explode(',',$this->lineColorRGB);
+        $lineColor=imagecolorallocate($this->img,$r,$g,$b);
+
+        list($r,$g,$b) = explode(',',$this->textColorRGB);
+        $textColor=imagecolorallocate($this->img,$r,$g,$b);
+
         $this->str = $this->generateKeyString();
         $textbox=imagettfbbox($this->fSize,0,$this->font,$this->str) or die('Error in imagettfbbox function or font!'); 
         $x=($this->width-$textbox[4])/2; 
@@ -70,10 +83,9 @@ class Captcha {
         return implode($res);
     }
 
-    public function imgUrl() {
-
-        return URL::to('/wikichua/captcha?' . mt_rand(100000, 999999));
-
+    public function imgUrl($attributes = array())
+    {
+        return HTML::image(URL::to('/wikichua/captcha?' . mt_rand(100000, 999999)), 'Captcha image', $attributes);
     }
 
     public function checkCaptcha($user_input)
