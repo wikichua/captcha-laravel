@@ -68,18 +68,14 @@ class Captcha {
     protected function generateKeyString()
     {
         $possibleStrings = str_split($this->possibleString);
-        $rand_keys = array_rand($possibleStrings, $this->stringLength);
         $res = array();
+        $i = 0;
 
-        if($this->stringLength > 1)
+        while($i < $this->stringLength)
         {
-            for($a=0;$a<$this->stringLength;$a++)
-            {
-                $res[] = $possibleStrings[$rand_keys[$a]];
-            }
-        }else{
-            $res[] = $possibleStrings[$rand_keys];
+            $res[] = $possibleStrings[array_rand($possibleStrings)];
         }
+
         return implode($res);
     }
 
