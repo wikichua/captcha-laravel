@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'font'=>'packages/wikichua/captcha/fonts/luxisr.ttf', 
+    'font'=> __DIR__ .'/../../public/fonts/luxisr.ttf', 
     'count'=>40,  
     'fontSize'=>20,  
     'height'=>50,  
