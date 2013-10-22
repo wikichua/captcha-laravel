@@ -74,6 +74,7 @@ class Captcha {
         while($i < $this->stringLength)
         {
             $res[] = $possibleStrings[array_rand($possibleStrings)];
+            $i++;
         }
 
         return implode($res);
