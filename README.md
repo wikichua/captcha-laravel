@@ -1,19 +1,16 @@
 captcha-laravel
 ===============
 Composer.json:
-
-require: "wikichua/captcha": "dev-master"
+`require: "wikichua/captcha": "dev-master"`
 
 Provider:
-
-'Wikichua\Captcha\CaptchaServiceProvider',
+`'Wikichua\Captcha\CaptchaServiceProvider',`
 
 Alias:
+`'Captcha'  	  => 'Wikichua\Captcha\Facades\Captcha',`
 
-'Captcha'  	  => 'Wikichua\Captcha\Facades\Captcha',
-
-Sample usage:
-
+###Sample usage:
+````php
 Route::any('test',function() {
     if (Request::getMethod() == 'POST')
     {
@@ -36,3 +33,4 @@ Route::any('test',function() {
     $content .= Form::close();
     return $content;
 });
+````
